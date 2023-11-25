@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: gray;
+  background-image: url('age pic.jpeg');
+
+      background-repeat: no-repeat;
+ background-position: center center;
+      height: 100vh;
+        }
+        #calculator {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            margin-bottom: 8px;
+        }
+        input {
+            margin-bottom: 16px;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333;
+        }
+        .result-box {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .result-item {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <h2>Age Calculator</h2>
+        <label for="dob">Date of Birth:</label>
+        <input type="text" id="dob" required>
+        <br>
+        <button onclick="calculateAge()">Calculate Age</button>
+        <div id="result" class="result-box">
+            <div class="result-item" id="years">Years: </div>
+            <div class="result-item" id="months">Months: </div>
+            <div class="result-item" id="days">Days: </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#dob", {
+            dateFormat: "Y-m-d",
+            maxDate: new Date(), // Set max date to today
+            defaultDate: new Date(), // Set default date to today
+        });
+
+        function calculateAge() {
+            // Get the selected date of birth
+            const dobInput = document.getElementById('dob').value;
+
+            // Create a Date object from the input value
+            const dob = new Date(dobInput);
+
+            // Get the current date
+            const currentDate = new Date();
+
+            // Calculate the difference in years, months, and days
+            let years = currentDate.getFullYear() - dob.getFullYear();
+            let months = currentDate.getMonth() - dob.getMonth();
+            let days = currentDate.getDate() - dob.getDate();
+
+            // Adjust the age if the birthday hasn't occurred this month
+            if (days < 0) {
+                months--;
+                // Calculate the remaining days in the current month
+                const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+                days = lastMonth.getDate() - dob.getDate() + currentDate.getDate();
+            }
+
+            // Adjust the years and months
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Display the result
+            document.getElementById('result').textContent = `Your age is: ${years} years, ${months} months, and ${days} days`;
+        }
+    </script>
+</body>
+</html>
